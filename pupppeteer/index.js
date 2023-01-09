@@ -1,12 +1,12 @@
 import puppeteer from "puppeteer";
-
+import { Cluster } from "puppeteer-cluster";
 export const getPlayersOfMatch = async () => {
     try {
         const browser = await puppeteer.launch(
             {
                 headless: false,
                 devtools: true,
-                defaultViewport: null,
+                defaultViewport: false,
                 timeout: 1000000
             });
         const page = await browser.newPage();

@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import { Player } from "./models/players.js"
-import { getPlayersOfMatch } from "./index.js"
+import { getPlayersOfMatch } from "./pupppeteer/index.js"
 const PORT = 3000
 const URL = 'mongodb://0.0.0.0:27017/dotaBuffStat'
 
@@ -17,7 +17,7 @@ app.listen(PORT, (err) => {
     err ? console.log('err') : console.log(`Server is started on port:${PORT}`);
 })
 
-const gamers=await getPlayersOfMatch()
+const gamers = await getPlayersOfMatch()
 console.log(gamers);
 
 app.get('/players', (req, res) => {
