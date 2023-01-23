@@ -1,14 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
 import { Player } from "./models/players.js"
-import { getPlayersOfMatch } from "./pupppeteer/index.js"
+import { startScrape } from "./pupppeteer/testCluster.js"
 const PORT = 3000
-const URL = 'mongodb://0.0.0.0:27017/dotaBuffStat'
+const URL = 'mongodb://0.0.0.0:27017/dotaBuffScraper'
 
 const app = express();
 app.use(express.json())
 
-mongoose
+await mongoose
     .connect(URL)
     .then(() => console.log('Connected to MongoDB!'))
     .catch(() => console.log(`Connection DB error ${err}`))
@@ -17,8 +17,8 @@ app.listen(PORT, (err) => {
     err ? console.log('err') : console.log(`Server is started on port:${PORT}`);
 })
 
-const gamers = await getPlayersOfMatch()
-console.log(gamers);
+await startScrape()
+
 
 app.get('/players', (req, res) => {
     Player

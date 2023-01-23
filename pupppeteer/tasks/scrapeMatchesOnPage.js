@@ -1,29 +1,29 @@
-import scrapePlayersOfMatch from "./tasks/scrapePlayersOfMatch"
+import { scrapePlayersOfMatch } from "./scrapePlayersOfMatch.js"
 
+export const scrapeMatchesOnPage = async ({ page, data }) => {
 
-export default scrapeMatchesOnPage = async ({ page, data: url }) => {
-    await page.goto(url);
-
+    await page.goto(data.url, {
+        timeout: 60000,
+        waitUntil: 'domcontentloaded'
+    });
     await page.waitForSelector(`body > div.container-outer.seemsgood > div.skin-container > 
     div.container-inner.container-inner-content > div.content-inner > section > section > 
-    article > table > tbody > tr:nth-child(50)`,
+    article > table > tbody > tr:last-child`,
         {
             visible: true,
         })
-        .then(() => console.log('table of matches uploaded'));
+        //.then(() => console.log('table of matches uploaded'));
 
     let matches = await page.evaluate(() => {
-        let matchesOnPage = [...document.querySelectorAll('.lost'), ...document.querySelectorAll('.won')]
-        return matchInfo = matchesOnPage.map(
+        let matchesOnPage = [...document.querySelectorAll('.cell-large>a')]
+            .filter(match => match.innerText != 'No Hero')
+        return matchesOnPage.map(
             match => ({
-                matchURL: match.href,
-                matchDate: match.nextSibling.firstChild.dateTime
+                matchURL: match.href
             })
         )
     })
-    console.log(matches.length);
     for (const match of matches) {
-        cluster.queue(match.matchURL, scrapePlayersOfMatch);
+        data.cluster.queue(match, scrapePlayersOfMatch)
     }
-
 };

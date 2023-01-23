@@ -42,4 +42,4 @@ const playerSchema = new Schema({
     }
 
 })
-export const Player = mongoose.model('Player', playerSchema)
+export const Player = mongoose.model('players', playerSchema)
