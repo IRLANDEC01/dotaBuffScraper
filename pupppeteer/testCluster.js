@@ -3,25 +3,26 @@ import { scrapeMatchesOnPage } from "./tasks/scrapeMatchesOnPage.js"
 import proxyChain from "proxy-chain";
 
 
-const countPagesOnDotaBuff = 10;
-const oldProxyUrl = 'http://bob:password123@85.14.243.31:3128';
+const countPagesOnDotaBuff = 1;
+const oldProxyUrl = 'http://bob:password123@116.202.165.119:3121';
 const newProxyUrl = await proxyChain.anonymizeProxy({ url: oldProxyUrl });
 
 export const startScrape = async () => {
     try {
 
-        
+
 
         const cluster = await Cluster.launch({
             concurrency: Cluster.CONCURRENCY_PAGE,
-            maxConcurrency: 8,
+            maxConcurrency: 7,
             retryLimit: 3,
-            monitor:true,
+            monitor: false,
+            workerCreationDelay: 100,
             puppeteerOptions: {
                 headless: false,
                 defaultViewport: false,
-                timeout: 60000,
-                args: [`--proxy-server=${newProxyUrl}`]
+                timeout: 60000
+                //args: [`--proxy-server=${newProxyUrl}`]
             }
         });
 
@@ -37,7 +38,7 @@ export const startScrape = async () => {
                 },
                     scrapeMatchesOnPage);
         }
-       // await proxyChain.closeAnonymizedProxy(newProxyUrl, true);
+        // await proxyChain.closeAnonymizedProxy(newProxyUrl, true);
         await cluster.idle();
         await cluster.close();
     } catch (error) {

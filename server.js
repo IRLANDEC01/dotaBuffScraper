@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { Player } from "./models/players.js"
 import { startScrape } from "./pupppeteer/testCluster.js"
+import { scanningMatchesOnPage } from "./scanningMatchespage.js";
 const PORT = 3000
 const URL = 'mongodb://0.0.0.0:27017/dotaBuffScraper'
 
@@ -17,7 +18,8 @@ app.listen(PORT, (err) => {
     err ? console.log('err') : console.log(`Server is started on port:${PORT}`);
 })
 
-await startScrape()
+//await startScrape()
+await scanningMatchesOnPage()
 
 
 app.get('/players', (req, res) => {

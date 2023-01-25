@@ -1,32 +1,31 @@
-import { uploadMatchURL } from '../../middleware/uploadMatchURL.js';
-import { uploadPlayer } from '../../middleware/uploadPlayers.js';
+import { uploadMatchURL } from "../../middleware/uploadMatchURL.js";
+import { uploadPlayer } from "../../middleware/uploadPlayers.js";
 
-export const scrapePlayersOfMatch = async ({ page, data:matchURL }) => {
+export const scrapeLastMatch = async (matchURL, browser) => {
     try {
-
-
+        const page = await browser.newPage();
         await page.goto(matchURL, {
-            timeout: 60000,
             waitUntil: 'domcontentloaded'
         });
         await page.waitForSelector(`body > div.container-outer.seemsgood > div.skin-container >
-        div.container-inner.container-inner-content > div.content-inner > div.match-show > 
-        div.team-results > section.dire > article > table > tbody >
-         tr:nth-child(5)>td:last-child`)
-        // .then(() => console.log(`The match  uploaded:\n${data.matchURL} `));
+    div.container-inner.container-inner-content > div.content-inner > div.match-show > 
+    div.team-results > section.dire > article > table > tbody >
+     tr:nth-child(5)>td:last-child`)
+            .then(() => console.log(`The last match  uploaded:\n${matchURL} `));
+
 
         let players = await page.evaluate(() => {
             let matchResult = document.querySelector('.match-result').classList[2];
 
             let playersRadiant = [...document.querySelectorAll(`body > div.container-outer.seemsgood >
-        div.skin-container > div.container-inner.container-inner-content > div.content-inner >
-        div.match-show > div.team-results > section.radiant > article > table > tbody > 
-        tr`)]
+    div.skin-container > div.container-inner.container-inner-content > div.content-inner >
+    div.match-show > div.team-results > section.radiant > article > table > tbody > 
+    tr`)]
 
             let playersDire = [...document.querySelectorAll(`body > div.container-outer.seemsgood > 
-        div.skin-container > div.container-inner.container-inner-content > div.content-inner > 
-        div.match-show > div.team-results > section.dire > article > table > tbody > 
-        tr`)]
+    div.skin-container > div.container-inner.container-inner-content > div.content-inner > 
+    div.match-show > div.team-results > section.dire > article > table > tbody > 
+    tr`)]
             let nickNameRadiant = [...document.querySelectorAll('.image-container-player>a')].slice(0, 5)
             let nickNameDire = [...document.querySelectorAll('.image-container-player>a')].slice(5, 10)
 
@@ -85,7 +84,8 @@ export const scrapePlayersOfMatch = async ({ page, data:matchURL }) => {
         })
         await uploadMatchURL(matchURL)
         await uploadPlayer(players)
+        await page.close()
     } catch (error) {
-        console.log(`ОШИБКА В PLAYEROFMATHCES\n${data.matchURL}\n${error}`); z
+        console.log(error);
     }
 }
