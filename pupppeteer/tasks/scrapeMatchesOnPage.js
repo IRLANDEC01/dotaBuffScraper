@@ -23,7 +23,6 @@ export const scrapeMatchesOnPage = async ({ page, data }) => {
             return matchesOnPage.map(match => match.href)
         })
 
-        console.log(matches);
         
         for (const match of matches) {
             data.cluster.queue(match, scrapePlayersOfMatch)
