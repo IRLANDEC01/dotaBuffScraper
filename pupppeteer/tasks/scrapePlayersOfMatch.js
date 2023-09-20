@@ -3,17 +3,15 @@ import { uploadPlayer } from '../../middleware/uploadPlayers.js';
 
 export const scrapePlayersOfMatch = async ({ page, data:matchURL }) => {
     try {
-
-
         await page.goto(matchURL, {
-            timeout: 60000,
+            timeout: 5000,
             waitUntil: 'domcontentloaded'
         });
         await page.waitForSelector(`body > div.container-outer.seemsgood > div.skin-container >
         div.container-inner.container-inner-content > div.content-inner > div.match-show > 
         div.team-results > section.dire > article > table > tbody >
          tr:nth-child(5)>td:last-child`)
-        // .then(() => console.log(`The match  uploaded:\n${data.matchURL} `));
+         .then(() => console.log(`The match  uploaded:\n${matchURL} `));
 
         let players = await page.evaluate(() => {
             let matchResult = document.querySelector('.match-result').classList[2];
@@ -86,6 +84,6 @@ export const scrapePlayersOfMatch = async ({ page, data:matchURL }) => {
         await uploadMatchURL(matchURL)
         await uploadPlayer(players)
     } catch (error) {
-        console.log(`ОШИБКА В PLAYEROFMATHCES\n${data.matchURL}\n${error}`); z
+        console.log(`ОШИБКА В PLAYEROFMATHCES\n${matchURL}\n${error}`);
     }
 }

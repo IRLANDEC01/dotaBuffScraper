@@ -11,7 +11,7 @@ export const scanningMatchesOnPage = async () => {
         const browser = await puppeteer.launch({
             headless: false,
             defaultViewport: false,
-            timeout: 30000,
+            timeout: 1000,
             devtools: false
         });
         const page = await browser.newPage();
@@ -43,7 +43,7 @@ export const scanningMatchesOnPage = async () => {
             }
             await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
 
-        }, 60000);
+        }, 1000);
 
     } catch (error) {
         console.log(error);

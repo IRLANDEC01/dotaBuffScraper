@@ -18,8 +18,8 @@ app.listen(PORT, (err) => {
     err ? console.log('err') : console.log(`Server is started on port:${PORT}`);
 })
 
-//await startScrape()
-await scanningMatchesOnPage()
+await startScrape()
+//await scanningMatchesOnPage()
 
 
 app.get('/players', (req, res) => {

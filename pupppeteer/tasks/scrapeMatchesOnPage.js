@@ -2,11 +2,8 @@ import { scrapePlayersOfMatch } from "./scrapePlayersOfMatch.js"
 
 export const scrapeMatchesOnPage = async ({ page, data }) => {
     try {
-
-
-
         await page.goto(data.url, {
-            timeout: 60000,
+            timeout: 10000,
             waitUntil: 'domcontentloaded'
         });
         await page.waitForSelector(`body > div.container-outer.seemsgood > div.skin-container > 
@@ -15,7 +12,7 @@ export const scrapeMatchesOnPage = async ({ page, data }) => {
             {
                 visible: true,
             })
-        //.then(() => console.log('table of matches uploaded'));
+            .then(() => console.log('table of matches uploaded'));
 
         let matches = await page.evaluate(() => {
             let matchesOnPage = [...document.querySelectorAll('.cell-large>a')]
@@ -23,11 +20,11 @@ export const scrapeMatchesOnPage = async ({ page, data }) => {
             return matchesOnPage.map(match => match.href)
         })
 
-        
         for (const match of matches) {
             data.cluster.queue(match, scrapePlayersOfMatch)
         }
     } catch (error) {
+        console.log('ошибка в scraper Matcehs On page');
         console.log(error);
     }
 };

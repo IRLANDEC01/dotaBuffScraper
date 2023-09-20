@@ -9,9 +9,6 @@ const newProxyUrl = await proxyChain.anonymizeProxy({ url: oldProxyUrl });
 
 export const startScrape = async () => {
     try {
-
-
-
         const cluster = await Cluster.launch({
             concurrency: Cluster.CONCURRENCY_PAGE,
             maxConcurrency: 7,
