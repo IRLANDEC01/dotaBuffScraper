@@ -3,7 +3,7 @@ import { scrapeMatchesOnPage } from "./tasks/scrapeMatchesOnPage.js"
 import proxyChain from "proxy-chain";
 
 
-const countPagesOnDotaBuff = 1;
+const pagesDotaBuffForScrape = 1;
 const oldProxyUrl = 'http://bob:password123@116.202.165.119:3121';
 const newProxyUrl = await proxyChain.anonymizeProxy({ url: oldProxyUrl });
 
@@ -27,7 +27,7 @@ export const startScrape = async () => {
             console.log(`  Error crawling ${data}: ${err.message}`);
         });
 
-        for (let page = 1; page <= countPagesOnDotaBuff; page++) {
+        for (let page = 1; page <= pagesDotaBuffForScrape; page++) {
             await cluster
                 .queue({
                     url: `https://dotabuff.com/players/159639310/matches?enhance=overview&page=${page}`,
